@@ -135,10 +135,51 @@ button:hover {
   border-radius: 20px;
   cursor: pointer;
 }
+
+    .shooting-star {
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 2px;
+  height: 2px;
+  background: white;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8),
+              0 0 20px rgba(180,210,255,0.6);
+  opacity: 0;
+  transform: rotate(45deg);
+  z-index: 2;
+}
+
+.shooting-star::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60px;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(to left, white, transparent);
+  opacity: 0.6;
+}
+
+@keyframes shoot {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(45deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(600px, 600px) rotate(45deg);
+  }
+}
   </style>
 </head>
 <body>
   <div class="stars" id="stars"></div>
+
+  <div id="shooting-star" class="shooting-star"></div>
 
   <div class="wrap">
     <h1>Elseora</h1>
@@ -154,7 +195,7 @@ button:hover {
     <source src="the_mountain-space-438391.mp3" type="audio/mpeg">
   </audio>
 
-  <button class="sound-btn" onclick="toggleSound()">sound</button>
+  <button class="sound-btn" onclick="toggleSound()" id="soundBtn">sound off</button>
 
   <script>
     const starsContainer = document.getElementById("stars");
@@ -214,17 +255,45 @@ createStars(20, "layer3", 25, 45, 2, 4);
     }
 
     let isPlaying = false;
-    const audio = document.getElementById("bgm");
+const audio = document.getElementById("bgm");
+const soundBtn = document.getElementById("soundBtn");
 
-    function toggleSound() {
-      if (!isPlaying) {
-        audio.play();
-        isPlaying = true;
-      } else {
-        audio.pause();
-        isPlaying = false;
-      }
-    }
+function toggleSound() {
+  if (!isPlaying) {
+    audio.play();
+    isPlaying = true;
+    soundBtn.textContent = "sound on";
+  } else {
+    audio.pause();
+    isPlaying = false;
+    soundBtn.textContent = "sound off";
+  }
+}
+    const shootingStar = document.getElementById("shooting-star");
+
+function triggerShootingStar() {
+  const startX = Math.random() * window.innerWidth;
+  const startY = Math.random() * window.innerHeight * 0.3;
+
+  shootingStar.style.left = startX + "px";
+  shootingStar.style.top = startY + "px";
+
+  shootingStar.style.animation = "none";
+  shootingStar.offsetHeight; // 強制刷新
+
+  shootingStar.style.animation = "shoot 1.2s ease-out";
+}
+
+// 每 20~30 秒出現一次（更自然）
+function scheduleShootingStar() {
+  const delay = 20000 + Math.random() * 10000;
+  setTimeout(() => {
+    triggerShootingStar();
+    scheduleShootingStar();
+  }, delay);
+}
+
+scheduleShootingStar();
   </script>
 </body>
 </html>
