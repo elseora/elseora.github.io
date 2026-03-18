@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elseora</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrap {
+      text-align: center;
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: 52px;
+      margin: 0 0 16px;
+      letter-spacing: 1px;
+    }
+
+    p {
+      margin: 0 0 32px;
+      color: #cfcfcf;
+      font-size: 18px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 16px 28px;
+      font-size: 16px;
+      border-radius: 999px;
+      border: 1px solid #fff;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: rgba(255,255,255,0.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Elseora</h1>
+    <p>Escape — another world, one second away</p>
+
+    <div class="buttons">
+      <button onclick="escapeEarth()">ESCAPE EARTH</button>
+      <button onclick="escapeCosmos()">ESCAPE COSMOS</button>
+    </div>
+  </div>
+
+  <script>
+    function escapeEarth() {
+      const earthPlaces = [
+        "https://earth.google.com/web/",
+        "https://www.google.com/maps/@27.9881,86.9250,3a,75y,90t/data=!3m8!1e1",
+        "https://www.google.com/maps/@35.3606,138.7274,3a,75y,90t/data=!3m8!1e1"
+      ];
+      const random = earthPlaces[Math.floor(Math.random() * earthPlaces.length)];
+      window.open(random, "_blank");
+    }
+
+    function escapeCosmos() {
+      const cosmosPlaces = [
+        "https://eyes.nasa.gov/apps/solar-system/#/home",
+        "https://www.google.com/sky/",
+        "https://science.nasa.gov/universe/"
+      ];
+      const random = cosmosPlaces[Math.floor(Math.random() * cosmosPlaces.length)];
+      window.open(random, "_blank");
+    }
+  </script>
+</body>
+</html>
