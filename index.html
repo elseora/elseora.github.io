@@ -12,17 +12,21 @@
       background: #000;
       color: #fff;
       font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
     body {
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
     .wrap {
       text-align: center;
       padding: 24px;
+      position: relative;
+      z-index: 1;
     }
 
     h1 {
@@ -57,9 +61,53 @@
     button:hover {
       background: rgba(255,255,255,0.08);
     }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: black;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      opacity: 0.6;
+      border-radius: 50%;
+      animation: floatStar linear infinite;
+    }
+
+    @keyframes floatStar {
+      from {
+        transform: translateY(0px);
+        opacity: 0.3;
+      }
+      to {
+        transform: translateY(-1000px);
+        opacity: 0.8;
+      }
+    }
+
+    .sound-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1;
+      background: transparent;
+      color: white;
+      border: 1px solid white;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+  <div class="stars" id="stars"></div>
+
   <div class="wrap">
     <h1>Elseora</h1>
     <p>where distance disappears</p>
@@ -70,38 +118,69 @@
     </div>
   </div>
 
+  <audio id="bgm" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b9c1c8d2.mp3?filename=ambient-space-110397.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="sound-btn" onclick="toggleSound()">sound</button>
+
   <script>
+    const starsContainer = document.getElementById("stars");
+
+    for (let i = 0; i < 120; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.animationDuration = (20 + Math.random() * 40) + "s";
+      star.style.opacity = Math.random();
+      starsContainer.appendChild(star);
+    }
+
     function transitionAndGo(url) {
-  document.body.style.transition = "all 0.8s ease";
-  document.body.style.opacity = "0";
-  document.body.style.transform = "scale(1.05)";
+      document.body.style.transition = "all 0.8s ease";
+      document.body.style.opacity = "0";
+      document.body.style.transform = "scale(1.05)";
 
-  setTimeout(() => {
-    window.open(url, "_blank");
-    document.body.style.opacity = "1";
-    document.body.style.transform = "scale(1)";
-  }, 800);
-}
+      setTimeout(() => {
+        window.open(url, "_blank");
+        document.body.style.opacity = "1";
+        document.body.style.transform = "scale(1)";
+      }, 800);
+    }
 
-function escapeEarth() {
-  const earthPlaces = [
-    "https://earth.google.com/web/",
-    "https://www.google.com/maps/@27.9881,86.9250,3a,75y,90t/data=!3m8!1e1",
-    "https://www.google.com/maps/@35.3606,138.7274,3a,75y,90t/data=!3m8!1e1"
-  ];
-  const random = earthPlaces[Math.floor(Math.random() * earthPlaces.length)];
-  transitionAndGo(random);
-}
+    function escapeEarth() {
+      const earthPlaces = [
+        "https://earth.google.com/web/",
+        "https://www.google.com/maps/@27.9881,86.9250,3a,75y,90t/data=!3m8!1e1",
+        "https://www.google.com/maps/@35.3606,138.7274,3a,75y,90t/data=!3m8!1e1"
+      ];
+      const random = earthPlaces[Math.floor(Math.random() * earthPlaces.length)];
+      transitionAndGo(random);
+    }
 
-function escapeCosmos() {
-  const cosmosPlaces = [
-    "https://eyes.nasa.gov/apps/solar-system/#/home",
-    "https://www.google.com/sky/",
-    "https://science.nasa.gov/universe/"
-  ];
-  const random = cosmosPlaces[Math.floor(Math.random() * cosmosPlaces.length)];
-  transitionAndGo(random);
-}
+    function escapeCosmos() {
+      const cosmosPlaces = [
+        "https://eyes.nasa.gov/apps/solar-system/#/home",
+        "https://www.google.com/sky/",
+        "https://science.nasa.gov/universe/"
+      ];
+      const random = cosmosPlaces[Math.floor(Math.random() * cosmosPlaces.length)];
+      transitionAndGo(random);
+    }
+
+    let isPlaying = false;
+    const audio = document.getElementById("bgm");
+
+    function toggleSound() {
+      if (!isPlaying) {
+        audio.play();
+        isPlaying = true;
+      } else {
+        audio.pause();
+        isPlaying = false;
+      }
+    }
   </script>
 </body>
 </html>
