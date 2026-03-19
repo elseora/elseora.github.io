@@ -244,162 +244,175 @@
 
   <button class="sound-btn" onclick="toggleSound()" id="soundBtn">sound off</button>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbz5-SlB4FVf-6Qrx06UFqL24zx8uNKFSB4IgmDrAm9SGgts2DRONVp6DgBXN_NvzLPj/exec
-";
+ <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbz5-SlB4FVf-6Qrx06UFqL24zx8uNKFSB4IgmDrAm9SGgts2DRONVp6DgBXN_NvzLPj/exec";
 
-    const starsContainer = document.getElementById("stars");
-    const shootingStar = document.getElementById("shooting-star");
-    const audio = document.getElementById("bgm");
-    const soundBtn = document.getElementById("soundBtn");
-    const loadingNote = document.getElementById("loadingNote");
+const starsContainer = document.getElementById("stars");
+const shootingStar = document.getElementById("shooting-star");
+const audio = document.getElementById("bgm");
+const soundBtn = document.getElementById("soundBtn");
+const loadingNote = document.getElementById("loadingNote");
 
-    let isPlaying = false;
-    let scenesCache = null;
+let isPlaying = false;
+let scenesCache = null;
 
-    function createStars(count, layerName, minDrift, maxDrift, minTwinkle, maxTwinkle) {
-      for (let i = 0; i < count; i++) {
-        const star = document.createElement("div");
-        star.className = `star ${layerName}`;
+function createStars(count, layerName, minDrift, maxDrift, minTwinkle, maxTwinkle) {
+  for (let i = 0; i < count; i++) {
+    const star = document.createElement("div");
+    star.className = `star ${layerName}`;
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
 
-        star.style.left = Math.random() * 100 + "vw";
-        star.style.top = Math.random() * 100 + "vh";
+    const drift = (minDrift + Math.random() * (maxDrift - minDrift)).toFixed(2);
+    const twinkle = (minTwinkle + Math.random() * (maxTwinkle - minTwinkle)).toFixed(2);
 
-        const drift = (minDrift + Math.random() * (maxDrift - minDrift)).toFixed(2);
-        const twinkle = (minTwinkle + Math.random() * (maxTwinkle - minTwinkle)).toFixed(2);
+    star.style.animationDuration = `${drift}s, ${twinkle}s`;
+    star.style.animationDelay = `${Math.random() * 10}s, ${Math.random() * 5}s`;
 
-        star.style.animationDuration = `${drift}s, ${twinkle}s`;
-        star.style.animationDelay = `${Math.random() * 10}s, ${Math.random() * 5}s`;
+    starsContainer.appendChild(star);
+  }
+}
 
-        starsContainer.appendChild(star);
-      }
-    }
+createStars(90, "layer1", 80, 130, 5, 9);
+createStars(55, "layer2", 45, 80, 3, 6);
+createStars(20, "layer3", 25, 45, 2, 4);
 
-    createStars(90, "layer1", 80, 130, 5, 9);
-    createStars(55, "layer2", 45, 80, 3, 6);
-    createStars(20, "layer3", 25, 45, 2, 4);
+function toggleSound() {
+  if (!isPlaying) {
+    audio.play();
+    isPlaying = true;
+    soundBtn.textContent = "sound on";
+  } else {
+    audio.pause();
+    isPlaying = false;
+    soundBtn.textContent = "sound off";
+  }
+}
 
-    function toggleSound() {
-      if (!isPlaying) {
-        audio.play();
-        isPlaying = true;
-        soundBtn.textContent = "sound on";
-      } else {
-        audio.pause();
-        isPlaying = false;
-        soundBtn.textContent = "sound off";
-      }
-    }
+function triggerShootingStar() {
+  const startX = Math.random() * window.innerWidth;
+  const startY = Math.random() * window.innerHeight * 0.3;
 
-    function triggerShootingStar() {
-      const startX = Math.random() * window.innerWidth;
-      const startY = Math.random() * window.innerHeight * 0.3;
+  shootingStar.style.left = startX + "px";
+  shootingStar.style.top = startY + "px";
 
-      shootingStar.style.left = startX + "px";
-      shootingStar.style.top = startY + "px";
+  shootingStar.style.animation = "none";
+  shootingStar.offsetHeight;
+  shootingStar.style.animation = "shoot 1.2s ease-out";
+}
 
-      shootingStar.style.animation = "none";
-      shootingStar.offsetHeight;
-      shootingStar.style.animation = "shoot 1.2s ease-out";
-    }
-
-    function scheduleShootingStar() {
-      const delay = 20000 + Math.random() * 10000;
-      setTimeout(() => {
-        triggerShootingStar();
-        scheduleShootingStar();
-      }, delay);
-    }
-
+function scheduleShootingStar() {
+  const delay = 20000 + Math.random() * 10000;
+  setTimeout(() => {
+    triggerShootingStar();
     scheduleShootingStar();
+  }, delay);
+}
 
-    async function fetchScenes() {
-      if (scenesCache) return scenesCache;
+scheduleShootingStar();
 
-      const res = await fetch(API_URL);
-      if (!res.ok) {
-        throw new Error("Failed to fetch scenes");
-      }
+function normalizeScene(item) {
+  return {
+    active: String(item.active || "").trim().toLowerCase(),
+    type: String(item.type || "").trim().toLowerCase(),
+    scene_id: String(item.scene_id || "").trim(),
+    title: String(item.title || "").trim(),
+    subtitle: String(item.subtitle || "").trim(),
+    background_url: String(item.background_url || "").trim(),
+    weight: parseInt(item.weight, 10) || 1,
 
-      const data = await res.json();
+    product_1_name: String(item.product_1_name || "").trim(),
+    product_1_link: String(item.product_1_link || "").trim(),
+    product_1_image: String(item.product_1_image || "").trim(),
+    product_1_type: String(item.product_1_type || "").trim().toLowerCase(),
 
-      scenesCache = data.map(item => ({
-        active: String(item.active || "").trim().toLowerCase(),
-        type: String(item.type || "").trim().toLowerCase(),
-        scene_id: String(item.scene_id || "").trim(),
-        title: String(item.title || "").trim(),
-        subtitle: String(item.subtitle || "").trim(),
-        background_url: String(item.background_url || "").trim(),
-        product_name: String(item.product_name || "").trim(),
-        product_link: String(item.product_link || "").trim(),
-        product_image: String(item.product_image || "").trim(),
-        weight: parseInt(item.weight, 10) || 1
-      }));
+    product_2_name: String(item.product_2_name || "").trim(),
+    product_2_link: String(item.product_2_link || "").trim(),
+    product_2_image: String(item.product_2_image || "").trim(),
+    product_2_type: String(item.product_2_type || "").trim().toLowerCase(),
 
-      return scenesCache;
+    product_3_name: String(item.product_3_name || "").trim(),
+    product_3_link: String(item.product_3_link || "").trim(),
+    product_3_image: String(item.product_3_image || "").trim(),
+    product_3_type: String(item.product_3_type || "").trim().toLowerCase()
+  };
+}
+
+async function fetchScenes() {
+  try {
+    if (scenesCache) return scenesCache;
+
+    const res = await fetch(API_URL);
+    if (!res.ok) {
+      throw new Error("Failed to fetch scenes");
     }
 
-    function weightedPick(items) {
-      const expanded = [];
+    const data = await res.json();
+    scenesCache = data.map(normalizeScene);
+    return scenesCache;
+  } catch (error) {
+    console.error("fetchScenes error:", error);
+    return [];
+  }
+}
 
-      items.forEach(item => {
-        const weight = Math.max(1, item.weight || 1);
-        for (let i = 0; i < weight; i++) {
-          expanded.push(item);
-        }
-      });
+function weightedPick(items) {
+  const expanded = [];
 
-      return expanded[Math.floor(Math.random() * expanded.length)];
+  items.forEach(item => {
+    const weight = Math.max(1, item.weight || 1);
+    for (let i = 0; i < weight; i++) {
+      expanded.push(item);
     }
+  });
 
-    function transitionAndGo(url) {
-      loadingNote.style.display = "block";
-      document.body.classList.add("fade-out");
+  return expanded[Math.floor(Math.random() * expanded.length)];
+}
 
-      setTimeout(() => {
-        window.location.href = url;
-      }, 800);
-    }
+function transitionAndGo(url) {
+  if (loadingNote) {
+    loadingNote.style.display = "block";
+  }
+  document.body.classList.add("fade-out");
 
-    async function escapeEarth() {
-      try {
-        const scenes = await fetchScenes();
-        const earthScenes = scenes.filter(
-          item => item.active === "yes" && item.type === "earth" && item.scene_id
-        );
+  setTimeout(() => {
+    window.location.href = url;
+  }, 800);
+}
 
-        if (!earthScenes.length) {
-          alert("No Earth scenes found.");
-          return;
-        }
+async function escapeEarth() {
+  const scenes = await fetchScenes();
+  const earthScenes = scenes.filter(item =>
+    item.active === "yes" &&
+    item.type === "earth" &&
+    item.scene_id
+  );
 
-        const selected = weightedPick(earthScenes);
-        transitionAndGo(`scene.html?id=${encodeURIComponent(selected.scene_id)}`);
-      } catch (error) {
-        console.error(error);
-        alert("Unable to load Earth scenes.");
-      }
-    }
+  if (!earthScenes.length) {
+    alert("No Earth scenes found.");
+    return;
+  }
 
-    async function escapeCosmos() {
-      try {
-        const scenes = await fetchScenes();
-        const cosmosScenes = scenes.filter(
-          item => item.active === "yes" && item.type === "cosmos" && item.scene_id
-        );
+  const selected = weightedPick(earthScenes);
+  transitionAndGo(`scene.html?id=${encodeURIComponent(selected.scene_id)}`);
+}
 
-        if (!cosmosScenes.length) {
-          alert("No Cosmos scenes found.");
-          return;
-        }
+async function escapeCosmos() {
+  const scenes = await fetchScenes();
+  const cosmosScenes = scenes.filter(item =>
+    item.active === "yes" &&
+    item.type === "cosmos" &&
+    item.scene_id
+  );
 
-        const selected = weightedPick(cosmosScenes);
-        transitionAndGo(`scene.html?id=${encodeURIComponent(selected.scene_id)}`);
-      } catch (error) {
-        console.error(error);
-        alert("Unable to load Cosmos scenes.");
-      }
-    }
-  </script>
+  if (!cosmosScenes.length) {
+    alert("No Cosmos scenes found.");
+    return;
+  }
+
+  const selected = weightedPick(cosmosScenes);
+  transitionAndGo(`scene.html?id=${encodeURIComponent(selected.scene_id)}`);
+}
+</script>
 </body>
 </html>
