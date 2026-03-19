@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elseora Scene</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    .scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.72) 0%,
+        rgba(0,0,0,0.22) 38%,
+        rgba(0,0,0,0.10) 100%
+      );
+      pointer-events: none;
+    }
+
+    .top-actions {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(0,0,0,0.22);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      font-size: 14px;
+    }
+
+    .action-btn:hover {
+      background: rgba(255,255,255,0.10);
+    }
+
+    .top-overlay {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      text-align: center;
+      width: min(90%, 860px);
+      padding: 20px 24px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .scene-title {
+      margin: 0;
+      font-size: clamp(34px, 7vw, 76px);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .scene-subtitle {
+      margin-top: 14px;
+      font-size: clamp(14px, 2vw, 22px);
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .product-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 16px 18px 22px;
+      background: linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0.30));
+      backdrop-filter: blur(10px);
+    }
+
+    .product-bar::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .product-bar::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+    }
+
+    .product-card {
+      flex: 0 0 180px;
+      text-decoration: none;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .product-card:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .product-card-body {
+      padding: 12px;
+    }
+
+    .product-card-title {
+      font-size: 15px;
+      line-height: 1.4;
+      margin: 0 0 6px;
+    }
+
+    .product-card-meta {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .empty-state {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      background: rgba(0,0,0,0.28);
+      padding: 10px 16px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      font-size: 13px;
+      opacity: 0.75;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene">
+    <div class="top-actions">
+      <button class="action-btn" onclick="goHome()">← Elseora</button>
+      <button class="action-btn" onclick="reroll()">Reroll</button>
+    </div>
+
+    <div class="top-overlay">
+      <h1 class="scene-title" id="sceneTitle"></h1>
+      <div class="scene-subtitle" id="sceneSubtitle"></div>
+    </div>
+
+    <div class="product-bar" id="productBar"></div>
+    <div class="empty-state" id="emptyState">No product assigned to this scene yet.</div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbz5-SlB4FVf-6Qrx06UFqL24zx8uNKFSB4IgmDrAm9SGgts2DRONVp6DgBXN_NvzLPj/exec";
+
+    async function fetchScenes() {
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error("Failed to fetch scenes");
+
+      const data = await res.json();
+
+      return data.map(item => ({
+        active: String(item.active || "").trim().toLowerCase(),
+        type: String(item.type || "").trim().toLowerCase(),
+        scene_id: String(item.scene_id || "").trim(),
+        title: String(item.title || "").trim(),
+        subtitle: String(item.subtitle || "").trim(),
+        background_url: String(item.background_url || "").trim(),
+        product_name: String(item.product_name || "").trim(),
+        product_link: String(item.product_link || "").trim(),
+        product_image: String(item.product_image || "").trim(),
+        weight: parseInt(item.weight, 10) || 1
+      }));
+    }
+
+    function goHome() {
+      window.location.href = "./";
+    }
+
+    async function reroll() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const currentId = params.get("id");
+
+        const scenes = await fetchScenes();
+        const currentScene = scenes.find(
+          item => item.active === "yes" && item.scene_id === currentId
+        );
+
+        if (!currentScene) {
+          goHome();
+          return;
+        }
+
+        const sameTypeScenes = scenes.filter(
+          item =>
+            item.active === "yes" &&
+            item.type === currentScene.type &&
+            item.scene_id &&
+            item.scene_id !== currentId
+        );
+
+        if (!sameTypeScenes.length) return;
+
+        const selected = sameTypeScenes[Math.floor(Math.random() * sameTypeScenes.length)];
+        window.location.href = `scene.html?id=${encodeURIComponent(selected.scene_id)}`;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function renderProductCard(item) {
+      const bar = document.getElementById("productBar");
+      const emptyState = document.getElementById("emptyState");
+
+      if (!item.product_name || !item.product_link) {
+        bar.style.display = "none";
+        emptyState.style.display = "block";
+        return;
+      }
+
+      const card = document.createElement("a");
+      card.className = "product-card";
+      card.href = item.product_link;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+
+      card.innerHTML = `
+        ${item.product_image ? `<img src="${item.product_image}" alt="${item.product_name}">` : `<div style="height:120px;"></div>`}
+        <div class="product-card-body">
+          <p class="product-card-title">${item.product_name}</p>
+          <div class="product-card-meta">Enter product</div>
+        </div>
+      `;
+
+      bar.appendChild(card);
+    }
+
+    async function loadScene() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const sceneId = params.get("id");
+
+        if (!sceneId) {
+          document.body.innerHTML = "<div style='color:white;padding:40px;'>Missing scene id.</div>";
+          return;
+        }
+
+        const scenes = await fetchScenes();
+        const scene = scenes.find(
+          item => item.active === "yes" && item.scene_id === sceneId
+        );
+
+        if (!scene) {
+          document.body.innerHTML = "<div style='color:white;padding:40px;'>Scene not found.</div>";
+          return;
+        }
+
+        const sceneEl = document.getElementById("scene");
+        sceneEl.style.backgroundImage = `url("${scene.background_url}")`;
+
+        document.getElementById("sceneTitle").textContent = scene.title || "Untitled Scene";
+        document.getElementById("sceneSubtitle").textContent = scene.subtitle || "";
+
+        renderProductCard(scene);
+
+        document.body.classList.add("loaded");
+      } catch (error) {
+        console.error(error);
+        document.body.innerHTML = "<div style='color:white;padding:40px;'>Failed to load scene.</div>";
+      }
+    }
+
+    loadScene();
+  </script>
+</body>
+</html>
