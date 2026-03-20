@@ -4,18 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elseora</title>
+
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
+
     :root {
-      --text-main: #ffffff;
-      --text-soft: rgba(255,255,255,0.82);
-      --text-faint: rgba(255,255,255,0.62);
-      --line-soft: rgba(255,255,255,0.18);
-      --glass-bg: rgba(255,255,255,0.06);
-      --glass-strong: rgba(255,255,255,0.10);
-      --shadow-soft: 0 10px 40px rgba(0,0,0,0.28);
-      --radius-xl: 28px;
+      --cream: #ebe7dd;
+      --cream-2: #f4f0e8;
+      --moss: #405113;
+      --green-smoke: #b4ae6d;
+      --golden: #9c692b;
+      --yellow: #f5a805;
+      --forest-deep: #26310f;
+      --forest-shadow: rgba(27, 34, 11, 0.66);
+      --line: rgba(64, 81, 19, 0.16);
+      --text-dark: #253018;
+      --text-soft: rgba(37, 48, 24, 0.72);
+      --text-light: rgba(255,255,255,0.92);
+      --glass: rgba(255,255,255,0.18);
+      --glass-strong: rgba(255,255,255,0.26);
+      --shadow: 0 18px 60px rgba(31, 39, 15, 0.15);
+      --radius-xl: 36px;
+      --radius-lg: 24px;
       --radius-pill: 999px;
-      --max-width: 1180px;
+      --max: 1240px;
     }
 
     * {
@@ -29,818 +41,894 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: #000;
-      color: var(--text-main);
-      font-family: Arial, sans-serif;
     }
 
     body {
-      min-height: 100vh;
+      font-family: "Manrope", Arial, sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
       overflow-x: hidden;
-      overflow-y: auto;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .display {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      letter-spacing: 0.01em;
+    }
+
+    .site-shell {
       position: relative;
-      background:
-        radial-gradient(circle at 20% 30%, rgba(82, 96, 180, 0.18), transparent 22%),
-        radial-gradient(circle at 80% 20%, rgba(133, 74, 170, 0.12), transparent 20%),
-        radial-gradient(circle at 60% 75%, rgba(64, 118, 170, 0.10), transparent 24%),
-        radial-gradient(circle at center, #050814 0%, #02040a 45%, #000 100%);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      overflow: hidden;
+      background: #111;
     }
 
     .hero-bg {
-      position: fixed;
+      position: absolute;
       inset: 0;
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.32;
-      z-index: 0;
       transform: scale(1.03);
-      transition: background-image 0.8s ease, opacity 0.8s ease;
+      transition: background-image 0.7s ease;
+      filter: saturate(0.92) contrast(0.95);
     }
 
     .hero-overlay {
-      position: fixed;
+      position: absolute;
       inset: 0;
-      z-index: 0;
       background:
-        linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.58) 100%);
-      pointer-events: none;
+        linear-gradient(to bottom,
+          rgba(25, 35, 10, 0.18) 0%,
+          rgba(25, 35, 10, 0.10) 25%,
+          rgba(22, 29, 10, 0.18) 52%,
+          rgba(20, 24, 9, 0.45) 76%,
+          rgba(20, 24, 9, 0.65) 100%);
     }
 
-    .stars {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .star {
-      position: absolute;
-      border-radius: 50%;
-      background: white;
-      animation-name: driftUp, twinkle;
-      animation-timing-function: linear, ease-in-out;
-      animation-iteration-count: infinite, infinite;
-    }
-
-    .star.layer1 {
-      width: 1px;
-      height: 1px;
-      opacity: 0.35;
-      box-shadow: 0 0 4px rgba(255,255,255,0.35);
-    }
-
-    .star.layer2 {
-      width: 2px;
-      height: 2px;
-      opacity: 0.6;
-      box-shadow: 0 0 8px rgba(255,255,255,0.5);
-    }
-
-    .star.layer3 {
-      width: 3px;
-      height: 3px;
-      opacity: 0.9;
-      box-shadow: 0 0 12px rgba(180,210,255,0.9);
-    }
-
-    @keyframes driftUp {
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(-1200px);
-      }
-    }
-
-    @keyframes twinkle {
-      0%, 100% {
-        opacity: 0.25;
-      }
-      50% {
-        opacity: 1;
-      }
-    }
-
-    .shooting-star {
-      position: fixed;
-      top: -10%;
-      left: -10%;
-      width: 2px;
-      height: 2px;
-      background: white;
-      box-shadow: 0 0 6px rgba(255,255,255,0.8),
-                  0 0 20px rgba(180,210,255,0.6);
-      opacity: 0;
-      transform: rotate(45deg);
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .shooting-star::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -60px;
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(to left, white, transparent);
-      opacity: 0.6;
-    }
-
-    @keyframes shoot {
-      0% {
-        opacity: 0;
-        transform: translate(0, 0) rotate(45deg);
-      }
-      10% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        transform: translate(600px, 600px) rotate(45deg);
-      }
-    }
-
-    .page {
+    .hero-inner {
       position: relative;
       z-index: 2;
+      width: 100%;
+      min-height: 100vh;
+      padding: 28px 28px 36px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
     }
 
-    .hero {
-      min-height: 100vh;
+    .hero-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-brand {
+      text-align: center;
+      color: var(--text-light);
+    }
+
+    .hero-brand small {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 2px;
+    }
+
+    .hero-brand h1 {
+      margin: 0;
+      font-size: clamp(46px, 7vw, 86px);
+      line-height: 0.95;
+      font-weight: 500;
+    }
+
+    .hero-center {
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 40px 0 20px;
+    }
+
+    .audio-stage {
+      width: min(760px, 100%);
       text-align: center;
-      position: relative;
-      padding: 24px;
+      color: var(--text-light);
     }
 
-    .hero-content {
-      width: 100%;
-      max-width: 860px;
-      padding: 28px;
-    }
-
-    .hero-title {
-      font-size: 56px;
-      line-height: 1.05;
-      margin: 0 0 16px;
-      letter-spacing: 1px;
-      font-weight: 600;
-      text-shadow: 0 6px 30px rgba(0,0,0,0.35);
+    .hero-scene-name {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 56px);
+      line-height: 1;
+      font-weight: 500;
+      text-shadow: 0 8px 28px rgba(0,0,0,0.16);
     }
 
     .hero-subtitle {
-      margin: 0 auto 14px;
-      max-width: 720px;
-      color: var(--text-soft);
-      font-size: 20px;
-      line-height: 1.6;
-      text-shadow: 0 4px 18px rgba(0,0,0,0.35);
+      margin: 0 0 24px;
+      font-size: 16px;
+      line-height: 1.7;
+      opacity: 0.92;
     }
 
-    .hero-scene-label {
-      display: inline-block;
-      margin: 0 0 28px;
-      padding: 8px 14px;
-      border-radius: var(--radius-pill);
-      font-size: 13px;
+    .audio-shell {
+      margin: 0 auto;
+      width: min(560px, 100%);
+      background: rgba(255,255,255,0.64);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 999px;
+      padding: 12px 16px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+    }
+
+    .audio-shell audio {
+      width: 100%;
+      display: block;
+      border-radius: 999px;
+    }
+
+    .audio-meta {
+      margin-top: 12px;
+      font-size: 12px;
       letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.78);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(6px);
+      text-transform: uppercase;
+      opacity: 0.84;
     }
 
-    .hero-buttons {
+    .hero-bottom {
       display: flex;
-      gap: 14px;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      flex-wrap: wrap;
-      margin-top: 10px;
+      justify-content: flex-end;
+      gap: 10px;
+      padding-bottom: 12px;
     }
 
-    .primary-btn,
-    .secondary-btn,
-    .sound-btn {
+    .hero-scroll-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.78);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      min-height: 54px;
+      padding: 0 26px;
       border-radius: var(--radius-pill);
       cursor: pointer;
-      transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      font-family: "Manrope", Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
-    .primary-btn {
-      padding: 16px 28px;
-      font-size: 16px;
-      color: #111;
-      background: rgba(255,255,255,0.92);
-      border: 1px solid rgba(255,255,255,0.92);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .primary-btn:hover {
+    .hero-scroll-btn:hover {
       transform: translateY(-1px);
-      background: #fff;
+      background: rgba(255,255,255,0.16);
+      border-color: #fff;
     }
 
-    .secondary-btn {
-      padding: 16px 24px;
-      font-size: 16px;
-      color: #fff;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.34);
+    .hero-scroll-note {
+      color: rgba(255,255,255,0.88);
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
     }
 
-    .secondary-btn:hover {
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.10);
-    }
-
+    /* ===== COMMON SECTIONS ===== */
     .section {
       position: relative;
-      padding: 110px 24px;
+      padding: 92px 24px;
+      background: var(--cream);
     }
 
-    .section::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.10), rgba(0,0,0,0.42));
-      pointer-events: none;
-      z-index: 0;
+    .section + .section {
+      border-top: 1px solid rgba(64, 81, 19, 0.08);
     }
 
     .section-inner {
-      position: relative;
-      z-index: 1;
-      max-width: var(--max-width);
+      max-width: var(--max);
       margin: 0 auto;
     }
 
-    .section-kicker {
+    .eyebrow {
       display: inline-block;
       margin-bottom: 16px;
-      padding: 8px 14px;
-      border-radius: var(--radius-pill);
+      color: rgba(64, 81, 19, 0.82);
       font-size: 12px;
-      letter-spacing: 0.10em;
-      color: rgba(255,255,255,0.70);
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.10);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
 
-    .section h2 {
+    .section-title {
       margin: 0 0 14px;
-      font-size: 38px;
-      font-weight: 600;
-      line-height: 1.15;
-      letter-spacing: 0.01em;
+      font-size: clamp(34px, 4.5vw, 62px);
+      line-height: 0.96;
+      font-weight: 500;
+      color: var(--text-dark);
     }
 
     .section-intro {
       margin: 0 0 34px;
-      max-width: 700px;
-      color: var(--text-soft);
-      font-size: 18px;
-      line-height: 1.7;
-    }
-
-    .product-card {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 28px;
-      align-items: center;
-      padding: 24px;
-      border-radius: var(--radius-xl);
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--line-soft);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    .product-visual {
-      position: relative;
-      min-height: 360px;
-      border-radius: 22px;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
-        radial-gradient(circle at 25% 25%, rgba(120, 150, 220, 0.18), transparent 28%),
-        radial-gradient(circle at 75% 30%, rgba(90, 170, 180, 0.12), transparent 25%),
-        linear-gradient(135deg, rgba(7,14,28,0.9), rgba(13,26,44,0.86));
-      border: 1px solid rgba(255,255,255,0.10);
-    }
-
-    .product-visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      opacity: 0.82;
-      mix-blend-mode: screen;
-    }
-
-    .product-visual-text {
-      position: absolute;
-      inset: auto 20px 18px 20px;
-      z-index: 2;
-      color: rgba(255,255,255,0.95);
-      text-shadow: 0 4px 20px rgba(0,0,0,0.42);
-    }
-
-    .product-visual-text .mini {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 12px;
-      letter-spacing: 0.10em;
-      color: rgba(255,255,255,0.66);
-    }
-
-    .product-visual-text strong {
-      display: block;
-      font-size: 24px;
-      line-height: 1.2;
-      font-weight: 600;
-    }
-
-    .product-copy h3 {
-      margin: 0 0 10px;
-      font-size: 30px;
-      line-height: 1.2;
-      font-weight: 600;
-    }
-
-    .product-copy .lead {
-      margin: 0 0 16px;
+      max-width: 720px;
       color: var(--text-soft);
       font-size: 17px;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
-    .product-copy .support {
-      margin: 0 0 24px;
-      color: var(--text-faint);
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    .product-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .product-link {
+    .cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 50px;
-      padding: 14px 22px;
+      padding: 0 22px;
       border-radius: var(--radius-pill);
-      text-decoration: none;
-      font-size: 15px;
-      line-height: 1;
-      transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
-    }
-
-    .product-link.primary {
-      background: rgba(255,255,255,0.92);
-      color: #101010;
-    }
-
-    .product-link.primary:hover {
-      background: #fff;
-      transform: translateY(-1px);
-    }
-
-    .product-link.ghost {
-      background: rgba(255,255,255,0.04);
+      background: var(--moss);
       color: #fff;
-      border: 1px solid rgba(255,255,255,0.22);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: transform 0.25s ease, background 0.25s ease;
+      box-shadow: 0 10px 30px rgba(64, 81, 19, 0.18);
     }
 
-    .product-link.ghost:hover {
-      background: rgba(255,255,255,0.10);
+    .cta:hover {
       transform: translateY(-1px);
+      background: #4b5d18;
     }
 
-    .product-note {
-      font-size: 13px;
-      color: rgba(255,255,255,0.58);
+    .cta.soft {
+      background: transparent;
+      color: var(--moss);
+      border: 1px solid rgba(64, 81, 19, 0.22);
+      box-shadow: none;
     }
 
-    .footer-note {
-      text-align: center;
-      padding: 46px 24px 80px;
-      color: rgba(255,255,255,0.50);
-      font-size: 13px;
+    .cta.soft:hover {
+      background: rgba(64, 81, 19, 0.05);
+    }
+
+    .tiny-note {
+      color: rgba(64, 81, 19, 0.62);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===== MUSIC SECTION ===== */
+    .album-layout {
+      display: grid;
+      grid-template-columns: 1.02fr 1fr 0.92fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .album-art-card,
+    .album-info-card,
+    .album-track-card,
+    .notion-main-card,
+    .notion-preview-card,
+    .pod-card {
+      background: rgba(255,255,255,0.56);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .album-art-card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      min-height: 520px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.68), rgba(255,255,255,0.36));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+    }
+
+    .vinyl-wrap {
+      position: relative;
+      width: min(440px, 100%);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vinyl {
+      position: absolute;
+      right: 2%;
+      top: 50%;
+      width: 68%;
+      aspect-ratio: 1 / 1;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #2b2b2b 0 14%, #111 14.5% 17%, #292929 17.5% 19%, #0d0d0d 19.5% 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 20px 45px rgba(0,0,0,0.18);
+    }
+
+    .album-cover {
       position: relative;
       z-index: 2;
+      width: 78%;
+      aspect-ratio: 1 / 1;
+      background: #f7f4ed;
+      box-shadow: 0 24px 50px rgba(0,0,0,0.14);
+      overflow: hidden;
+      border-radius: 2px;
     }
 
-    .sound-btn {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      z-index: 20;
-      padding: 11px 16px;
-      font-size: 14px;
-      color: #fff;
-      background: rgba(0,0,0,0.34);
-      border: 1px solid rgba(255,255,255,0.38);
+    .album-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.94) contrast(0.98);
     }
 
-    .sound-btn:hover {
-      background: rgba(255,255,255,0.10);
-      transform: translateY(-1px);
+    .album-info-card {
+      border-radius: var(--radius-xl);
+      padding: 34px 32px;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.48);
     }
 
-    .hero-scroll-hint {
-      position: absolute;
-      left: 50%;
-      bottom: 26px;
-      transform: translateX(-50%);
-      z-index: 3;
+    .album-title {
+      margin: 0 0 10px;
+      font-size: clamp(36px, 4vw, 58px);
+      line-height: 0.95;
+      font-weight: 600;
+    }
+
+    .album-meta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      color: rgba(37, 48, 24, 0.72);
       font-size: 13px;
-      color: rgba(255,255,255,0.60);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
     }
 
-    @media (max-width: 920px) {
-      .hero-title {
-        font-size: 44px;
-      }
+    .album-copy {
+      color: var(--text-soft);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 26px;
+    }
 
-      .hero-subtitle {
-        font-size: 18px;
-      }
+    .album-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
 
-      .section h2 {
-        font-size: 32px;
-      }
+    .album-track-card {
+      border-radius: var(--radius-xl);
+      padding: 30px 28px;
+      min-height: 520px;
+      background: rgba(255,255,255,0.46);
+    }
 
-      .product-card {
+    .track-title {
+      margin: 0 0 18px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--moss);
+    }
+
+    .track-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .track-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 12px;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(64, 81, 19, 0.08);
+      font-size: 14px;
+      color: rgba(37, 48, 24, 0.86);
+    }
+
+    .track-list li span:first-child {
+      color: rgba(64, 81, 19, 0.45);
+    }
+
+    /* ===== NOTION SECTION ===== */
+    .notion-layout {
+      display: grid;
+      grid-template-columns: 1.28fr 0.72fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .notion-main-card {
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 0.82fr 1fr;
+      gap: 26px;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.44));
+    }
+
+    .notion-main-visual {
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 340px;
+      background: #ddd9cf;
+    }
+
+    .notion-main-visual img,
+    .notion-preview-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .notion-copy h3 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 3vw, 44px);
+      line-height: 1.04;
+      font-weight: 600;
+    }
+
+    .notion-copy p {
+      margin: 0 0 18px;
+      color: var(--text-soft);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .notion-preview-card {
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+      background: rgba(255,255,255,0.52);
+    }
+
+    .notion-preview-card h4 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--moss);
+    }
+
+    .notion-preview-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .preview-tile {
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: 112px;
+      background: #ddd9cf;
+    }
+
+    /* ===== POD SECTION ===== */
+    .pod-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .pod-card {
+      border-radius: 28px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.58);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .pod-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(31, 39, 15, 0.16);
+    }
+
+    .pod-visual {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 4.8;
+      background: #d9d5cc;
+    }
+
+    .pod-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.55s ease;
+      filter: saturate(0.94) contrast(0.97);
+    }
+
+    .pod-card:hover .pod-visual img {
+      transform: scale(1.08);
+    }
+
+    .pod-copy {
+      padding: 20px 20px 22px;
+    }
+
+    .pod-copy h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.15;
+      font-weight: 600;
+    }
+
+    .pod-copy p {
+      margin: 0 0 16px;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .pod-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 40px 24px 70px;
+      text-align: center;
+      color: rgba(64, 81, 19, 0.56);
+      font-size: 13px;
+      background: linear-gradient(to bottom, var(--cream), #e7e2d7);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1080px) {
+      .album-layout {
         grid-template-columns: 1fr;
       }
 
-      .product-visual {
-        min-height: 300px;
+      .album-art-card,
+      .album-info-card,
+      .album-track-card {
+        min-height: auto;
+      }
+
+      .notion-layout {
+        grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 640px) {
-      .hero {
-        padding: 20px;
+    @media (max-width: 760px) {
+      .hero-inner {
+        padding: 22px 16px 28px;
       }
 
-      .hero-content {
-        padding: 20px;
-      }
-
-      .hero-title {
-        font-size: 38px;
+      .hero-scene-name {
+        font-size: 42px;
       }
 
       .hero-subtitle {
-        font-size: 16px;
+        font-size: 15px;
       }
 
-      .primary-btn,
-      .secondary-btn {
-        width: 100%;
-        max-width: 320px;
-      }
-
-      .hero-buttons {
-        flex-direction: column;
+      .audio-shell {
+        padding: 10px 12px;
       }
 
       .section {
-        padding: 84px 18px;
+        padding: 72px 18px;
       }
 
-      .section h2 {
-        font-size: 28px;
+      .notion-main-card {
+        grid-template-columns: 1fr;
       }
 
-      .section-intro {
-        font-size: 16px;
-      }
-
-      .product-copy h3 {
-        font-size: 26px;
-      }
-
-      .product-visual {
-        min-height: 240px;
-      }
-
-      .sound-btn {
-        right: 14px;
-        bottom: 14px;
+      .pod-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="hero-bg" id="heroBg"></div>
-  <div class="hero-overlay"></div>
-  <div class="stars" id="stars"></div>
-  <div id="shooting-star" class="shooting-star"></div>
-
-  <div class="page">
+  <div class="site-shell">
     <section class="hero" id="top">
-      <div class="hero-content">
-        <h1 class="hero-title">Elseora</h1>
-        <p class="hero-subtitle" id="heroSubtitle">where distance disappears</p>
-        <div class="hero-scene-label" id="heroSceneLabel">SCENE 01</div>
+      <div class="hero-bg" id="heroBg"></div>
+      <div class="hero-overlay"></div>
 
-        <div class="hero-buttons">
-          <button class="primary-btn" onclick="scrollToProducts()">Enter</button>
-          <button class="secondary-btn" onclick="shuffleHero()">Another moment</button>
+      <div class="hero-inner">
+        <div class="hero-top">
+          <div class="hero-brand">
+            <small>Elseora</small>
+            <h1 class="display" id="heroSceneName">tree</h1>
+          </div>
+        </div>
+
+        <div class="hero-center">
+          <div class="audio-stage">
+            <p class="hero-subtitle" id="heroSubtitle">
+              A quieter place to begin. Stay for a moment, then carry something with you.
+            </p>
+
+            <div class="audio-shell">
+              <audio id="heroAudio" controls preload="metadata"></audio>
+            </div>
+
+            <div class="audio-meta" id="heroMeta">Forest / Preview audio</div>
+          </div>
+        </div>
+
+        <div class="hero-bottom">
+          <button class="hero-scroll-btn" onclick="scrollToCollection()">Scroll to collection</button>
+          <div class="hero-scroll-note">music, gratitude notes, and objects to take with you</div>
         </div>
       </div>
-
-      <div class="hero-scroll-hint">scroll to continue</div>
     </section>
 
-    <section class="section" id="products">
+    <section class="section" id="music">
       <div class="section-inner">
-        <span class="section-kicker">MUSIC</span>
-        <h2>Keep listening.</h2>
+        <span class="eyebrow">Music Album</span>
+        <h2 class="section-title display">A record that keeps the atmosphere going.</h2>
         <p class="section-intro">
-          The sound does not stop here. Let the atmosphere continue a little longer,
-          and stay with a quieter rhythm.
+          Built as the first object of Elseora, this release extends the listening experience beyond the hero scene.
+          The feeling should be less like browsing a store, and more like stepping deeper into the same place.
         </p>
 
-        <div class="product-card">
-          <div class="product-visual">
-            <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora music visual">
-            <div class="product-visual-text">
-              <span class="mini">AMBIENT RELEASE</span>
-              <strong>Elseora Vol. 01</strong>
+        <div class="album-layout">
+          <div class="album-art-card">
+            <div class="vinyl-wrap">
+              <div class="vinyl"></div>
+              <div class="album-cover">
+                <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora album cover">
+              </div>
             </div>
           </div>
 
-          <div class="product-copy">
-            <h3>Music Album</h3>
-            <p class="lead">
-              A calm ambient release designed to extend the same mood you entered with.
-            </p>
-            <p class="support">
-              This is the first direction of Elseora — sound as a place to remain, not just background.
-            </p>
-
-            <div class="product-actions">
-              <a class="product-link primary" href="#" target="_blank" rel="noopener noreferrer">Listen / Buy</a>
-              <span class="product-note">update this link later</span>
+          <div class="album-info-card">
+            <div>
+              <h3 class="album-title display">Morning in Moss</h3>
+              <div class="album-meta">
+                <span>2026</span>
+                <span>10 tracks</span>
+                <span>48 min</span>
+              </div>
+              <div class="album-copy">
+                A calm ambient album for slower mornings, forest-colored thoughts, and the kind of quiet that feels light rather than heavy.
+                The tone is clean, natural, and clear — something that can begin a day without pressure.
+              </div>
+              <div class="album-copy">
+                This section is meant to feel editorial: one album, one story, one clear invitation.
+              </div>
             </div>
+
+            <div class="album-actions">
+              <a class="cta" href="#" target="_blank" rel="noopener noreferrer">Listen / Buy</a>
+              <span class="tiny-note">update album purchase link later</span>
+            </div>
+          </div>
+
+          <div class="album-track-card">
+            <h4 class="track-title">Track list</h4>
+            <ol class="track-list">
+              <li><span>1.</span><span>Tree Before Morning</span><span>4:12</span></li>
+              <li><span>2.</span><span>Open Ground</span><span>5:06</span></li>
+              <li><span>3.</span><span>Still Air</span><span>4:49</span></li>
+              <li><span>4.</span><span>Green Smoke</span><span>3:55</span></li>
+              <li><span>5.</span><span>Soft Light, No Rush</span><span>5:41</span></li>
+              <li><span>6.</span><span>Somewhere Past the Path</span><span>4:38</span></li>
+              <li><span>7.</span><span>Moss Underfoot</span><span>4:21</span></li>
+              <li><span>8.</span><span>A Place to Begin</span><span>5:02</span></li>
+              <li><span>9.</span><span>Breathing Room</span><span>4:34</span></li>
+              <li><span>10.</span><span>Carry the Quiet</span><span>6:07</span></li>
+            </ol>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="notionSection">
+    <section class="section" id="notion">
       <div class="section-inner">
-        <span class="section-kicker">NOTION</span>
-        <h2>Write it down.</h2>
+        <span class="eyebrow">Gratitude Notes</span>
+        <h2 class="section-title display">A softer place to write things down.</h2>
         <p class="section-intro">
-          A soft place for reflection, gratitude, and the kind of quiet that becomes clearer when written.
+          This layout should feel like a continuation of the forest mood — editorial, spacious, and quietly useful.
+          The small preview on the side is there to suggest the inside pages without turning the section into a busy product page.
         </p>
 
-        <div class="product-card">
-          <div class="product-visual">
-            <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora notion visual">
-            <div class="product-visual-text">
-              <span class="mini">DIGITAL SPACE</span>
-              <strong>Gratitude Notes</strong>
+        <div class="notion-layout">
+          <div class="notion-main-card">
+            <div class="notion-main-visual">
+              <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Notion gratitude notes cover">
+            </div>
+
+            <div class="notion-copy">
+              <h3 class="display">Elseora Gratitude Journal</h3>
+              <p>
+                A calm Notion space for daily gratitude, short reflections, and noticing what remains good.
+                The visual language should stay clean and breathable, so the notebook feels like part of the environment rather than a separate utility.
+              </p>
+              <p>
+                Think of this as a private room behind the landscape: simple structure, soft rhythm, and minimal friction.
+              </p>
+
+              <div class="album-actions">
+                <a class="cta" href="#" target="_blank" rel="noopener noreferrer">Open / Buy</a>
+                <span class="tiny-note">update notion link later</span>
+              </div>
             </div>
           </div>
 
-          <div class="product-copy">
-            <h3>Notion Gratitude Journal</h3>
-            <p class="lead">
-              A gentle digital notebook for noticing what remains, what returns, and what still matters.
-            </p>
-            <p class="support">
-              Minimal, quiet, and aligned with the same atmosphere as the landing experience.
-            </p>
+          <div class="notion-preview-card">
+            <h4>Inside preview</h4>
 
-            <div class="product-actions">
-              <a class="product-link primary" href="#" target="_blank" rel="noopener noreferrer">Open / Buy</a>
-              <span class="product-note">update this link later</span>
+            <div class="notion-preview-grid">
+              <div class="preview-tile">
+                <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Notion preview page 1">
+              </div>
+              <div class="preview-tile">
+                <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Notion preview page 2">
+              </div>
+              <div class="preview-tile">
+                <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Notion preview page 3">
+              </div>
             </div>
+
+            <span class="tiny-note">replace these with actual template preview shots later</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="podSection">
+    <section class="section" id="pod">
       <div class="section-inner">
-        <span class="section-kicker">PRINT ON DEMAND</span>
-        <h2>Take it with you.</h2>
+        <span class="eyebrow">Print on Demand</span>
+        <h2 class="section-title display">Three objects, lightly carried.</h2>
         <p class="section-intro">
-          A small physical extension of the page — not just a product, but something that keeps the mood nearby.
+          The last section should feel like wandering through a small, carefully selected corner.
+          Only a few pieces. Enough to bring a trace of the atmosphere home.
         </p>
 
-        <div class="product-card">
-          <div class="product-visual">
-            <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora pod visual">
-            <div class="product-visual-text">
-              <span class="mini">PHYSICAL OBJECT</span>
-              <strong>Elseora Carry Piece</strong>
+        <div class="pod-grid">
+          <article class="pod-card">
+            <div class="pod-visual">
+              <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora journal cover">
             </div>
-          </div>
-
-          <div class="product-copy">
-            <h3>Print on Demand</h3>
-            <p class="lead">
-              A simple item designed as a continuation of the atmosphere — something quiet, usable, and lasting.
-            </p>
-            <p class="support">
-              Keep this section minimal. One strong object is better than many scattered choices.
-            </p>
-
-            <div class="product-actions">
-              <a class="product-link primary" href="#" target="_blank" rel="noopener noreferrer">View / Buy</a>
-              <span class="product-note">update this link later</span>
+            <div class="pod-copy">
+              <h3 class="display">Soft Cover Journal</h3>
+              <p>A quiet notebook for bedside thoughts, morning starts, and small returns.</p>
+              <div class="pod-meta">
+                <a class="cta soft" href="#" target="_blank" rel="noopener noreferrer">View / Buy</a>
+                <span class="tiny-note">journal</span>
+              </div>
             </div>
-          </div>
+          </article>
+
+          <article class="pod-card">
+            <div class="pod-visual">
+              <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora art print">
+            </div>
+            <div class="pod-copy">
+              <h3 class="display">Forest Art Print</h3>
+              <p>A simple wall piece to keep the same calm palette in a room or working corner.</p>
+              <div class="pod-meta">
+                <a class="cta soft" href="#" target="_blank" rel="noopener noreferrer">View / Buy</a>
+                <span class="tiny-note">print</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="pod-card">
+            <div class="pod-visual">
+              <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora mug">
+            </div>
+            <div class="pod-copy">
+              <h3 class="display">Morning Mug</h3>
+              <p>A small object for tea, coffee, and a day that starts with a little less pressure.</p>
+              <div class="pod-meta">
+                <a class="cta soft" href="#" target="_blank" rel="noopener noreferrer">View / Buy</a>
+                <span class="tiny-note">mug</span>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <div class="footer-note">
-      Elseora — where distance disappears.
-    </div>
+    <footer class="footer">
+      Elseora — a place to arrive, wander gently, and take something with you.
+    </footer>
   </div>
 
-  <audio id="bgm" loop></audio>
-  <button class="sound-btn" onclick="toggleSound()" id="soundBtn">sound off</button>
-
   <script>
-    const starsContainer = document.getElementById("stars");
-    const shootingStar = document.getElementById("shooting-star");
-    const audio = document.getElementById("bgm");
-    const soundBtn = document.getElementById("soundBtn");
     const heroBg = document.getElementById("heroBg");
+    const heroSceneName = document.getElementById("heroSceneName");
     const heroSubtitle = document.getElementById("heroSubtitle");
-    const heroSceneLabel = document.getElementById("heroSceneLabel");
-
-    let isPlaying = false;
-    let currentHeroIndex = 0;
+    const heroMeta = document.getElementById("heroMeta");
+    const heroAudio = document.getElementById("heroAudio");
 
     const heroSets = [
       {
-        id: "scene-01",
-        label: "FOREST",
-        subtitle: "Slow down.",
+        name: "tree",
+        subtitle: "A quieter place to begin. Stay for a moment, then carry something with you.",
+        meta: "Forest / Preview audio",
         background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
         audio: "the_mountain-space-438391.mp3"
       },
       {
-        id: "scene-02",
-        label: "OCEAN",
-        subtitle: "Let it go.",
+        name: "morning",
+        subtitle: "Fresh light, open air, and a softer way into the day.",
+        meta: "Morning / Preview audio",
         background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
         audio: "the_mountain-space-438391.mp3"
       },
       {
-        id: "scene-03",
-        label: "RAIN",
-        subtitle: "Stay here.",
+        name: "moss",
+        subtitle: "Clean, green, and unhurried — a place where the pressure falls back.",
+        meta: "Moss / Preview audio",
         background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
         audio: "the_mountain-space-438391.mp3"
       },
       {
-        id: "scene-04",
-        label: "NIGHT",
-        subtitle: "Just breathe.",
+        name: "path",
+        subtitle: "A landscape to walk through slowly, with sound close by.",
+        meta: "Path / Preview audio",
         background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
         audio: "the_mountain-space-438391.mp3"
       },
       {
-        id: "scene-05",
-        label: "HORIZON",
-        subtitle: "Drift a little further.",
+        name: "light",
+        subtitle: "Clear, natural, and easy to return to — like the beginning of a good day.",
+        meta: "Light / Preview audio",
         background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
         audio: "the_mountain-space-438391.mp3"
       }
     ];
 
-    function createStars(count, layerName, minDrift, maxDrift, minTwinkle, maxTwinkle) {
-      for (let i = 0; i < count; i++) {
-        const star = document.createElement("div");
-        star.className = `star ${layerName}`;
-        star.style.left = Math.random() * 100 + "vw";
-        star.style.top = Math.random() * 100 + "vh";
+    function pickRandomHero() {
+      const index = Math.floor(Math.random() * heroSets.length);
+      const selected = heroSets[index];
 
-        const drift = (minDrift + Math.random() * (maxDrift - minDrift)).toFixed(2);
-        const twinkle = (minTwinkle + Math.random() * (maxTwinkle - minTwinkle)).toFixed(2);
-
-        star.style.animationDuration = `${drift}s, ${twinkle}s`;
-        star.style.animationDelay = `${Math.random() * 10}s, ${Math.random() * 5}s`;
-
-        starsContainer.appendChild(star);
-      }
+      heroBg.style.backgroundImage = `url("${selected.background}")`;
+      heroSceneName.textContent = selected.name;
+      heroSubtitle.textContent = selected.subtitle;
+      heroMeta.textContent = selected.meta;
+      heroAudio.src = selected.audio;
     }
 
-    createStars(90, "layer1", 80, 130, 5, 9);
-    createStars(55, "layer2", 45, 80, 3, 6);
-    createStars(20, "layer3", 25, 45, 2, 4);
-
-    function triggerShootingStar() {
-      const startX = Math.random() * window.innerWidth;
-      const startY = Math.random() * window.innerHeight * 0.3;
-
-      shootingStar.style.left = startX + "px";
-      shootingStar.style.top = startY + "px";
-
-      shootingStar.style.animation = "none";
-      shootingStar.offsetHeight;
-      shootingStar.style.animation = "shoot 1.2s ease-out";
+    function scrollToCollection() {
+      document.getElementById("music").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     }
 
-    function scheduleShootingStar() {
-      const delay = 20000 + Math.random() * 10000;
-      setTimeout(() => {
-        triggerShootingStar();
-        scheduleShootingStar();
-      }, delay);
-    }
-
-    scheduleShootingStar();
-
-    function randomIndex(max) {
-      return Math.floor(Math.random() * max);
-    }
-
-    function applyHeroByIndex(index, forceAudioReset = true) {
-      const hero = heroSets[index];
-      currentHeroIndex = index;
-
-      heroBg.style.backgroundImage = `url("${hero.background}")`;
-      heroSubtitle.textContent = hero.subtitle;
-      heroSceneLabel.textContent = hero.label;
-
-      if (forceAudioReset) {
-        const wasPlaying = isPlaying;
-        audio.src = hero.audio;
-        audio.load();
-
-        if (wasPlaying) {
-          audio.play().catch(() => {});
-        }
-      }
-    }
-
-    function shuffleHero() {
-      let nextIndex = randomIndex(heroSets.length);
-
-      if (heroSets.length > 1) {
-        while (nextIndex === currentHeroIndex) {
-          nextIndex = randomIndex(heroSets.length);
-        }
-      }
-
-      applyHeroByIndex(nextIndex, true);
-    }
-
-    function toggleSound() {
-      if (!isPlaying) {
-        audio.play().then(() => {
-          isPlaying = true;
-          soundBtn.textContent = "sound on";
-        }).catch(() => {});
-      } else {
-        audio.pause();
-        isPlaying = false;
-        soundBtn.textContent = "sound off";
-      }
-    }
-
-    function scrollToProducts() {
-      const section = document.getElementById("products");
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-
-    function initHero() {
-      const firstIndex = randomIndex(heroSets.length);
-      applyHeroByIndex(firstIndex, true);
-    }
-
-    initHero();
+    pickRandomHero();
+    window.scrollTo(0, 0);
   </script>
 </body>
 </html>
