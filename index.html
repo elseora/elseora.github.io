@@ -5,24 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elseora</title>
   <style>
+    :root {
+      --text-main: #ffffff;
+      --text-soft: rgba(255,255,255,0.82);
+      --text-faint: rgba(255,255,255,0.62);
+      --line-soft: rgba(255,255,255,0.18);
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.10);
+      --shadow-soft: 0 10px 40px rgba(0,0,0,0.28);
+      --radius-xl: 28px;
+      --radius-pill: 999px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
       background: #000;
-      color: #fff;
+      color: var(--text-main);
       font-family: Arial, sans-serif;
-      overflow: hidden;
     }
 
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
       position: relative;
-      opacity: 1;
-      transform: scale(1);
-      transition: opacity 0.8s ease, transform 0.8s ease;
       background:
         radial-gradient(circle at 20% 30%, rgba(82, 96, 180, 0.18), transparent 22%),
         radial-gradient(circle at 80% 20%, rgba(133, 74, 170, 0.12), transparent 20%),
@@ -30,59 +46,33 @@
         radial-gradient(circle at center, #050814 0%, #02040a 45%, #000 100%);
     }
 
-    body.fade-out {
-      opacity: 0;
-      transform: scale(1.05);
+    .hero-bg {
+      position: fixed;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.32;
+      z-index: 0;
+      transform: scale(1.03);
+      transition: background-image 0.8s ease, opacity 0.8s ease;
     }
 
-    .wrap {
-      text-align: center;
-      padding: 24px;
-      position: relative;
-      z-index: 2;
-    }
-
-    h1 {
-      font-size: 52px;
-      margin: 0 0 16px;
-      letter-spacing: 1px;
-    }
-
-    p {
-      margin: 0 0 32px;
-      color: #cfcfcf;
-      font-size: 18px;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    button {
-      padding: 16px 28px;
-      font-size: 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.7);
-      background: rgba(255,255,255,0.03);
-      color: #fff;
-      cursor: pointer;
-      backdrop-filter: blur(2px);
-      transition: background 0.25s ease, transform 0.25s ease;
-    }
-
-    button:hover {
-      background: rgba(255,255,255,0.10);
-      transform: translateY(-1px);
+    .hero-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.58) 100%);
+      pointer-events: none;
     }
 
     .stars {
       position: fixed;
       inset: 0;
-      z-index: 0;
+      z-index: 1;
       overflow: hidden;
+      pointer-events: none;
     }
 
     .star {
@@ -133,19 +123,6 @@
       }
     }
 
-    .sound-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 2;
-      background: transparent;
-      color: white;
-      border: 1px solid white;
-      padding: 10px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
     .shooting-star {
       position: fixed;
       top: -10%;
@@ -157,7 +134,7 @@
                   0 0 20px rgba(180,210,255,0.6);
       opacity: 0;
       transform: rotate(45deg);
-      z-index: 2;
+      z-index: 3;
       pointer-events: none;
     }
 
@@ -186,233 +163,684 @@
       }
     }
 
-    .loading-note {
+    .page {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 24px;
+    }
+
+    .hero-content {
+      width: 100%;
+      max-width: 860px;
+      padding: 28px;
+    }
+
+    .hero-title {
+      font-size: 56px;
+      line-height: 1.05;
+      margin: 0 0 16px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      text-shadow: 0 6px 30px rgba(0,0,0,0.35);
+    }
+
+    .hero-subtitle {
+      margin: 0 auto 14px;
+      max-width: 720px;
+      color: var(--text-soft);
+      font-size: 20px;
+      line-height: 1.6;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    }
+
+    .hero-scene-label {
+      display: inline-block;
+      margin: 0 0 28px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.78);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .sound-btn {
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .primary-btn {
+      padding: 16px 28px;
+      font-size: 16px;
+      color: #111;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(255,255,255,0.92);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      background: #fff;
+    }
+
+    .secondary-btn {
+      padding: 16px 24px;
+      font-size: 16px;
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.34);
+    }
+
+    .secondary-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.10);
+    }
+
+    .section {
+      position: relative;
+      padding: 110px 24px;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.10), rgba(0,0,0,0.42));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .section-inner {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      color: rgba(255,255,255,0.70);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 38px;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+
+    .section-intro {
+      margin: 0 0 34px;
+      max-width: 700px;
+      color: var(--text-soft);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .product-card {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line-soft);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .product-visual {
+      position: relative;
+      min-height: 360px;
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+        radial-gradient(circle at 25% 25%, rgba(120, 150, 220, 0.18), transparent 28%),
+        radial-gradient(circle at 75% 30%, rgba(90, 170, 180, 0.12), transparent 25%),
+        linear-gradient(135deg, rgba(7,14,28,0.9), rgba(13,26,44,0.86));
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .product-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.82;
+      mix-blend-mode: screen;
+    }
+
+    .product-visual-text {
+      position: absolute;
+      inset: auto 20px 18px 20px;
+      z-index: 2;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 4px 20px rgba(0,0,0,0.42);
+    }
+
+    .product-visual-text .mini {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      color: rgba(255,255,255,0.66);
+    }
+
+    .product-visual-text strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .product-copy h3 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .product-copy .lead {
+      margin: 0 0 16px;
+      color: var(--text-soft);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .product-copy .support {
+      margin: 0 0 24px;
+      color: var(--text-faint);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .product-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .product-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 14px 22px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1;
+      transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .product-link.primary {
+      background: rgba(255,255,255,0.92);
+      color: #101010;
+    }
+
+    .product-link.primary:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    .product-link.ghost {
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .product-link.ghost:hover {
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+    }
+
+    .product-note {
+      font-size: 13px;
+      color: rgba(255,255,255,0.58);
+    }
+
+    .footer-note {
+      text-align: center;
+      padding: 46px 24px 80px;
+      color: rgba(255,255,255,0.50);
+      font-size: 13px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .sound-btn {
       position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 20;
+      padding: 11px 16px;
+      font-size: 14px;
+      color: #fff;
+      background: rgba(0,0,0,0.34);
+      border: 1px solid rgba(255,255,255,0.38);
+    }
+
+    .sound-btn:hover {
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
       left: 50%;
-      bottom: 80px;
+      bottom: 26px;
       transform: translateX(-50%);
       z-index: 3;
       font-size: 13px;
-      color: rgba(255,255,255,0.75);
-      background: rgba(255,255,255,0.06);
-      padding: 8px 12px;
-      border-radius: 999px;
-      backdrop-filter: blur(4px);
-      display: none;
+      color: rgba(255,255,255,0.60);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 920px) {
+      .hero-title {
+        font-size: 44px;
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+      }
+
+      .section h2 {
+        font-size: 32px;
+      }
+
+      .product-card {
+        grid-template-columns: 1fr;
+      }
+
+      .product-visual {
+        min-height: 300px;
+      }
     }
 
     @media (max-width: 640px) {
-      h1 {
-        font-size: 42px;
+      .hero {
+        padding: 20px;
       }
 
-      p {
+      .hero-content {
+        padding: 20px;
+      }
+
+      .hero-title {
+        font-size: 38px;
+      }
+
+      .hero-subtitle {
         font-size: 16px;
       }
 
-      button {
+      .primary-btn,
+      .secondary-btn {
         width: 100%;
         max-width: 320px;
       }
 
-      .buttons {
+      .hero-buttons {
         flex-direction: column;
-        align-items: center;
+      }
+
+      .section {
+        padding: 84px 18px;
+      }
+
+      .section h2 {
+        font-size: 28px;
+      }
+
+      .section-intro {
+        font-size: 16px;
+      }
+
+      .product-copy h3 {
+        font-size: 26px;
+      }
+
+      .product-visual {
+        min-height: 240px;
+      }
+
+      .sound-btn {
+        right: 14px;
+        bottom: 14px;
       }
     }
   </style>
 </head>
 <body>
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
   <div class="stars" id="stars"></div>
   <div id="shooting-star" class="shooting-star"></div>
 
-  <div class="wrap">
-    <h1>Elseora</h1>
-    <p>where distance disappears</p>
+  <div class="page">
+    <section class="hero" id="top">
+      <div class="hero-content">
+        <h1 class="hero-title">Elseora</h1>
+        <p class="hero-subtitle" id="heroSubtitle">where distance disappears</p>
+        <div class="hero-scene-label" id="heroSceneLabel">SCENE 01</div>
 
-    <div class="buttons">
-      <button onclick="escapeEarth()">ESCAPE EARTH</button>
-      <button onclick="escapeCosmos()">ESCAPE COSMOS</button>
+        <div class="hero-buttons">
+          <button class="primary-btn" onclick="scrollToProducts()">Enter</button>
+          <button class="secondary-btn" onclick="shuffleHero()">Another moment</button>
+        </div>
+      </div>
+
+      <div class="hero-scroll-hint">scroll to continue</div>
+    </section>
+
+    <section class="section" id="products">
+      <div class="section-inner">
+        <span class="section-kicker">MUSIC</span>
+        <h2>Keep listening.</h2>
+        <p class="section-intro">
+          The sound does not stop here. Let the atmosphere continue a little longer,
+          and stay with a quieter rhythm.
+        </p>
+
+        <div class="product-card">
+          <div class="product-visual">
+            <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora music visual">
+            <div class="product-visual-text">
+              <span class="mini">AMBIENT RELEASE</span>
+              <strong>Elseora Vol. 01</strong>
+            </div>
+          </div>
+
+          <div class="product-copy">
+            <h3>Music Album</h3>
+            <p class="lead">
+              A calm ambient release designed to extend the same mood you entered with.
+            </p>
+            <p class="support">
+              This is the first direction of Elseora — sound as a place to remain, not just background.
+            </p>
+
+            <div class="product-actions">
+              <a class="product-link primary" href="#" target="_blank" rel="noopener noreferrer">Listen / Buy</a>
+              <span class="product-note">update this link later</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="notionSection">
+      <div class="section-inner">
+        <span class="section-kicker">NOTION</span>
+        <h2>Write it down.</h2>
+        <p class="section-intro">
+          A soft place for reflection, gratitude, and the kind of quiet that becomes clearer when written.
+        </p>
+
+        <div class="product-card">
+          <div class="product-visual">
+            <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora notion visual">
+            <div class="product-visual-text">
+              <span class="mini">DIGITAL SPACE</span>
+              <strong>Gratitude Notes</strong>
+            </div>
+          </div>
+
+          <div class="product-copy">
+            <h3>Notion Gratitude Journal</h3>
+            <p class="lead">
+              A gentle digital notebook for noticing what remains, what returns, and what still matters.
+            </p>
+            <p class="support">
+              Minimal, quiet, and aligned with the same atmosphere as the landing experience.
+            </p>
+
+            <div class="product-actions">
+              <a class="product-link primary" href="#" target="_blank" rel="noopener noreferrer">Open / Buy</a>
+              <span class="product-note">update this link later</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="podSection">
+      <div class="section-inner">
+        <span class="section-kicker">PRINT ON DEMAND</span>
+        <h2>Take it with you.</h2>
+        <p class="section-intro">
+          A small physical extension of the page — not just a product, but something that keeps the mood nearby.
+        </p>
+
+        <div class="product-card">
+          <div class="product-visual">
+            <img src="joel-holland-TRhGEGdw-YY-unsplash.jpg" alt="Elseora pod visual">
+            <div class="product-visual-text">
+              <span class="mini">PHYSICAL OBJECT</span>
+              <strong>Elseora Carry Piece</strong>
+            </div>
+          </div>
+
+          <div class="product-copy">
+            <h3>Print on Demand</h3>
+            <p class="lead">
+              A simple item designed as a continuation of the atmosphere — something quiet, usable, and lasting.
+            </p>
+            <p class="support">
+              Keep this section minimal. One strong object is better than many scattered choices.
+            </p>
+
+            <div class="product-actions">
+              <a class="product-link primary" href="#" target="_blank" rel="noopener noreferrer">View / Buy</a>
+              <span class="product-note">update this link later</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      Elseora — where distance disappears.
     </div>
   </div>
 
-  <div class="loading-note" id="loadingNote">Searching the portal...</div>
-
-  <audio id="bgm" loop>
-    <source src="the_mountain-space-438391.mp3" type="audio/mpeg">
-  </audio>
-
+  <audio id="bgm" loop></audio>
   <button class="sound-btn" onclick="toggleSound()" id="soundBtn">sound off</button>
 
- <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbz5-SlB4FVf-6Qrx06UFqL24zx8uNKFSB4IgmDrAm9SGgts2DRONVp6DgBXN_NvzLPj/exec";
+  <script>
+    const starsContainer = document.getElementById("stars");
+    const shootingStar = document.getElementById("shooting-star");
+    const audio = document.getElementById("bgm");
+    const soundBtn = document.getElementById("soundBtn");
+    const heroBg = document.getElementById("heroBg");
+    const heroSubtitle = document.getElementById("heroSubtitle");
+    const heroSceneLabel = document.getElementById("heroSceneLabel");
 
-const starsContainer = document.getElementById("stars");
-const shootingStar = document.getElementById("shooting-star");
-const audio = document.getElementById("bgm");
-const soundBtn = document.getElementById("soundBtn");
-const loadingNote = document.getElementById("loadingNote");
+    let isPlaying = false;
+    let currentHeroIndex = 0;
 
-let isPlaying = false;
-let scenesCache = null;
+    const heroSets = [
+      {
+        id: "scene-01",
+        label: "FOREST",
+        subtitle: "Slow down.",
+        background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
+        audio: "the_mountain-space-438391.mp3"
+      },
+      {
+        id: "scene-02",
+        label: "OCEAN",
+        subtitle: "Let it go.",
+        background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
+        audio: "the_mountain-space-438391.mp3"
+      },
+      {
+        id: "scene-03",
+        label: "RAIN",
+        subtitle: "Stay here.",
+        background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
+        audio: "the_mountain-space-438391.mp3"
+      },
+      {
+        id: "scene-04",
+        label: "NIGHT",
+        subtitle: "Just breathe.",
+        background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
+        audio: "the_mountain-space-438391.mp3"
+      },
+      {
+        id: "scene-05",
+        label: "HORIZON",
+        subtitle: "Drift a little further.",
+        background: "joel-holland-TRhGEGdw-YY-unsplash.jpg",
+        audio: "the_mountain-space-438391.mp3"
+      }
+    ];
 
-function createStars(count, layerName, minDrift, maxDrift, minTwinkle, maxTwinkle) {
-  for (let i = 0; i < count; i++) {
-    const star = document.createElement("div");
-    star.className = `star ${layerName}`;
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.top = Math.random() * 100 + "vh";
+    function createStars(count, layerName, minDrift, maxDrift, minTwinkle, maxTwinkle) {
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement("div");
+        star.className = `star ${layerName}`;
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.top = Math.random() * 100 + "vh";
 
-    const drift = (minDrift + Math.random() * (maxDrift - minDrift)).toFixed(2);
-    const twinkle = (minTwinkle + Math.random() * (maxTwinkle - minTwinkle)).toFixed(2);
+        const drift = (minDrift + Math.random() * (maxDrift - minDrift)).toFixed(2);
+        const twinkle = (minTwinkle + Math.random() * (maxTwinkle - minTwinkle)).toFixed(2);
 
-    star.style.animationDuration = `${drift}s, ${twinkle}s`;
-    star.style.animationDelay = `${Math.random() * 10}s, ${Math.random() * 5}s`;
+        star.style.animationDuration = `${drift}s, ${twinkle}s`;
+        star.style.animationDelay = `${Math.random() * 10}s, ${Math.random() * 5}s`;
 
-    starsContainer.appendChild(star);
-  }
-}
+        starsContainer.appendChild(star);
+      }
+    }
 
-createStars(90, "layer1", 80, 130, 5, 9);
-createStars(55, "layer2", 45, 80, 3, 6);
-createStars(20, "layer3", 25, 45, 2, 4);
+    createStars(90, "layer1", 80, 130, 5, 9);
+    createStars(55, "layer2", 45, 80, 3, 6);
+    createStars(20, "layer3", 25, 45, 2, 4);
 
-function toggleSound() {
-  if (!isPlaying) {
-    audio.play();
-    isPlaying = true;
-    soundBtn.textContent = "sound on";
-  } else {
-    audio.pause();
-    isPlaying = false;
-    soundBtn.textContent = "sound off";
-  }
-}
+    function triggerShootingStar() {
+      const startX = Math.random() * window.innerWidth;
+      const startY = Math.random() * window.innerHeight * 0.3;
 
-function triggerShootingStar() {
-  const startX = Math.random() * window.innerWidth;
-  const startY = Math.random() * window.innerHeight * 0.3;
+      shootingStar.style.left = startX + "px";
+      shootingStar.style.top = startY + "px";
 
-  shootingStar.style.left = startX + "px";
-  shootingStar.style.top = startY + "px";
+      shootingStar.style.animation = "none";
+      shootingStar.offsetHeight;
+      shootingStar.style.animation = "shoot 1.2s ease-out";
+    }
 
-  shootingStar.style.animation = "none";
-  shootingStar.offsetHeight;
-  shootingStar.style.animation = "shoot 1.2s ease-out";
-}
+    function scheduleShootingStar() {
+      const delay = 20000 + Math.random() * 10000;
+      setTimeout(() => {
+        triggerShootingStar();
+        scheduleShootingStar();
+      }, delay);
+    }
 
-function scheduleShootingStar() {
-  const delay = 20000 + Math.random() * 10000;
-  setTimeout(() => {
-    triggerShootingStar();
     scheduleShootingStar();
-  }, delay);
-}
 
-scheduleShootingStar();
-
-function normalizeScene(item) {
-  return {
-    active: String(item.active || "").trim().toLowerCase(),
-    type: String(item.type || "").trim().toLowerCase(),
-    scene_id: String(item.scene_id || "").trim(),
-    title: String(item.title || "").trim(),
-    subtitle: String(item.subtitle || "").trim(),
-    background_url: String(item.background_url || "").trim(),
-    weight: parseInt(item.weight, 10) || 1,
-
-    product_1_name: String(item.product_1_name || "").trim(),
-    product_1_link: String(item.product_1_link || "").trim(),
-    product_1_image: String(item.product_1_image || "").trim(),
-    product_1_type: String(item.product_1_type || "").trim().toLowerCase(),
-
-    product_2_name: String(item.product_2_name || "").trim(),
-    product_2_link: String(item.product_2_link || "").trim(),
-    product_2_image: String(item.product_2_image || "").trim(),
-    product_2_type: String(item.product_2_type || "").trim().toLowerCase(),
-
-    product_3_name: String(item.product_3_name || "").trim(),
-    product_3_link: String(item.product_3_link || "").trim(),
-    product_3_image: String(item.product_3_image || "").trim(),
-    product_3_type: String(item.product_3_type || "").trim().toLowerCase()
-  };
-}
-
-async function fetchScenes() {
-  try {
-    if (scenesCache) return scenesCache;
-
-    const res = await fetch(API_URL);
-    if (!res.ok) {
-      throw new Error("Failed to fetch scenes");
+    function randomIndex(max) {
+      return Math.floor(Math.random() * max);
     }
 
-    const data = await res.json();
-    scenesCache = data.map(normalizeScene);
-    return scenesCache;
-  } catch (error) {
-    console.error("fetchScenes error:", error);
-    return [];
-  }
-}
+    function applyHeroByIndex(index, forceAudioReset = true) {
+      const hero = heroSets[index];
+      currentHeroIndex = index;
 
-function weightedPick(items) {
-  const expanded = [];
+      heroBg.style.backgroundImage = `url("${hero.background}")`;
+      heroSubtitle.textContent = hero.subtitle;
+      heroSceneLabel.textContent = hero.label;
 
-  items.forEach(item => {
-    const weight = Math.max(1, item.weight || 1);
-    for (let i = 0; i < weight; i++) {
-      expanded.push(item);
+      if (forceAudioReset) {
+        const wasPlaying = isPlaying;
+        audio.src = hero.audio;
+        audio.load();
+
+        if (wasPlaying) {
+          audio.play().catch(() => {});
+        }
+      }
     }
-  });
 
-  return expanded[Math.floor(Math.random() * expanded.length)];
-}
+    function shuffleHero() {
+      let nextIndex = randomIndex(heroSets.length);
 
-function transitionAndGo(url) {
-  if (loadingNote) {
-    loadingNote.style.display = "block";
-  }
-  document.body.classList.add("fade-out");
+      if (heroSets.length > 1) {
+        while (nextIndex === currentHeroIndex) {
+          nextIndex = randomIndex(heroSets.length);
+        }
+      }
 
-  setTimeout(() => {
-    window.location.href = url;
-  }, 800);
-}
+      applyHeroByIndex(nextIndex, true);
+    }
 
-async function escapeEarth() {
-  const scenes = await fetchScenes();
-  const earthScenes = scenes.filter(item =>
-    item.active === "yes" &&
-    item.type === "earth" &&
-    item.scene_id
-  );
+    function toggleSound() {
+      if (!isPlaying) {
+        audio.play().then(() => {
+          isPlaying = true;
+          soundBtn.textContent = "sound on";
+        }).catch(() => {});
+      } else {
+        audio.pause();
+        isPlaying = false;
+        soundBtn.textContent = "sound off";
+      }
+    }
 
-  if (!earthScenes.length) {
-    alert("No Earth scenes found.");
-    return;
-  }
+    function scrollToProducts() {
+      const section = document.getElementById("products");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
 
-  const selected = weightedPick(earthScenes);
-  transitionAndGo(`scene.html?id=${encodeURIComponent(selected.scene_id)}`);
-}
+    function initHero() {
+      const firstIndex = randomIndex(heroSets.length);
+      applyHeroByIndex(firstIndex, true);
+    }
 
-async function escapeCosmos() {
-  const scenes = await fetchScenes();
-  const cosmosScenes = scenes.filter(item =>
-    item.active === "yes" &&
-    item.type === "cosmos" &&
-    item.scene_id
-  );
-
-  if (!cosmosScenes.length) {
-    alert("No Cosmos scenes found.");
-    return;
-  }
-
-  const selected = weightedPick(cosmosScenes);
-  transitionAndGo(`scene.html?id=${encodeURIComponent(selected.scene_id)}`);
-}
-</script>
+    initHero();
+  </script>
 </body>
 </html>
