@@ -10,22 +10,30 @@
 
     :root {
       --cream: #ebe7dd;
-      --cream-2: #f4f0e8;
+      --cream-warm: #f4f0e8;
+      --cream-deep: #e4ded1;
       --moss: #405113;
+      --moss-soft: #5a6d22;
       --green-smoke: #b4ae6d;
       --golden: #9c692b;
       --yellow: #f5a805;
       --forest-deep: #26310f;
-      --forest-shadow: rgba(27, 34, 11, 0.66);
-      --line: rgba(64, 81, 19, 0.16);
-      --text-dark: #253018;
-      --text-soft: rgba(37, 48, 24, 0.72);
-      --text-light: rgba(255,255,255,0.92);
-      --glass: rgba(255,255,255,0.18);
-      --glass-strong: rgba(255,255,255,0.26);
-      --shadow: 0 18px 60px rgba(31, 39, 15, 0.15);
-      --radius-xl: 36px;
-      --radius-lg: 24px;
+      --forest-deeper: #182008;
+      --forest-black: #0f1408;
+      --text-dark: #243016;
+      --text-soft: rgba(36, 48, 22, 0.74);
+      --text-faint: rgba(36, 48, 22, 0.54);
+      --text-light: rgba(255,255,255,0.94);
+      --text-light-soft: rgba(255,255,255,0.80);
+      --line: rgba(64, 81, 19, 0.14);
+      --line-strong: rgba(64, 81, 19, 0.24);
+      --white-glass: rgba(255,255,255,0.18);
+      --white-glass-2: rgba(255,255,255,0.28);
+      --shadow-soft: 0 20px 60px rgba(24, 32, 8, 0.12);
+      --shadow-strong: 0 28px 70px rgba(18, 24, 7, 0.16);
+      --radius-xl: 38px;
+      --radius-lg: 26px;
+      --radius-md: 20px;
       --radius-pill: 999px;
       --max: 1240px;
     }
@@ -56,8 +64,8 @@
     }
 
     a {
-      color: inherit;
       text-decoration: none;
+      color: inherit;
     }
 
     .display {
@@ -67,17 +75,16 @@
 
     .site-shell {
       position: relative;
+      background:
+        linear-gradient(to bottom, #f6f2ea 0%, var(--cream) 16%, #ece6da 48%, #e7e0d3 100%);
     }
 
-    /* ===== HERO ===== */
+    /* HERO */
     .hero {
       position: relative;
       min-height: 100vh;
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
       overflow: hidden;
-      background: #111;
+      background: var(--forest-black);
     }
 
     .hero-bg {
@@ -85,9 +92,9 @@
       inset: 0;
       background-size: cover;
       background-position: center;
-      transform: scale(1.03);
-      transition: background-image 0.7s ease;
-      filter: saturate(0.92) contrast(0.95);
+      transform: scale(1.04);
+      transition: background-image 0.8s ease;
+      filter: saturate(0.88) contrast(0.94) brightness(0.92);
     }
 
     .hero-overlay {
@@ -95,19 +102,21 @@
       inset: 0;
       background:
         linear-gradient(to bottom,
-          rgba(25, 35, 10, 0.18) 0%,
-          rgba(25, 35, 10, 0.10) 25%,
-          rgba(22, 29, 10, 0.18) 52%,
-          rgba(20, 24, 9, 0.45) 76%,
-          rgba(20, 24, 9, 0.65) 100%);
+          rgba(17, 23, 8, 0.18) 0%,
+          rgba(17, 23, 8, 0.08) 18%,
+          rgba(20, 28, 9, 0.18) 40%,
+          rgba(18, 24, 8, 0.42) 68%,
+          rgba(15, 20, 8, 0.72) 100%),
+        radial-gradient(circle at 50% 56%, rgba(255,255,255,0.06), transparent 26%),
+        radial-gradient(circle at 50% 90%, rgba(245,168,5,0.08), transparent 22%);
     }
 
     .hero-inner {
       position: relative;
       z-index: 2;
-      width: 100%;
       min-height: 100vh;
-      padding: 28px 28px 36px;
+      width: 100%;
+      padding: 26px 28px 34px;
       display: grid;
       grid-template-rows: auto 1fr auto;
     }
@@ -126,24 +135,25 @@
     .hero-brand small {
       display: block;
       font-size: 10px;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      opacity: 0.75;
+      opacity: 0.76;
       margin-bottom: 2px;
     }
 
     .hero-brand h1 {
       margin: 0;
-      font-size: clamp(46px, 7vw, 86px);
-      line-height: 0.95;
+      font-size: clamp(48px, 7vw, 92px);
+      line-height: 0.92;
       font-weight: 500;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.18);
     }
 
     .hero-center {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 0 20px;
+      padding: 36px 0 12px;
     }
 
     .audio-stage {
@@ -154,42 +164,45 @@
 
     .hero-scene-name {
       margin: 0 0 10px;
-      font-size: clamp(28px, 4vw, 56px);
+      font-size: clamp(32px, 4.2vw, 62px);
       line-height: 1;
       font-weight: 500;
-      text-shadow: 0 8px 28px rgba(0,0,0,0.16);
+      text-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
 
     .hero-subtitle {
-      margin: 0 0 24px;
+      margin: 0 auto 24px;
+      max-width: 700px;
+      color: var(--text-light-soft);
       font-size: 16px;
-      line-height: 1.7;
-      opacity: 0.92;
+      line-height: 1.8;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.16);
     }
 
     .audio-shell {
       margin: 0 auto;
       width: min(560px, 100%);
-      background: rgba(255,255,255,0.64);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 999px;
       padding: 12px 16px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.62);
+      border: 1px solid rgba(255,255,255,0.32);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
     }
 
     .audio-shell audio {
       width: 100%;
       display: block;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
     }
 
     .audio-meta {
       margin-top: 12px;
       font-size: 12px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
-      opacity: 0.84;
+      color: rgba(255,255,255,0.82);
     }
 
     .hero-bottom {
@@ -198,44 +211,63 @@
       align-items: center;
       justify-content: flex-end;
       gap: 10px;
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
 
     .hero-scroll-btn {
       appearance: none;
-      border: 1px solid rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.82);
       background: rgba(255,255,255,0.08);
-      color: white;
-      min-height: 54px;
-      padding: 0 26px;
+      color: #fff;
+      min-height: 56px;
+      padding: 0 28px;
       border-radius: var(--radius-pill);
       cursor: pointer;
       font-family: "Manrope", Arial, sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .hero-scroll-btn:hover {
       transform: translateY(-1px);
       background: rgba(255,255,255,0.16);
-      border-color: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
     }
 
     .hero-scroll-note {
-      color: rgba(255,255,255,0.88);
+      color: rgba(255,255,255,0.86);
       font-size: 13px;
       line-height: 1.5;
       text-align: center;
+      letter-spacing: 0.01em;
     }
 
-    /* ===== COMMON SECTIONS ===== */
+    /* COMMON */
     .section {
       position: relative;
-      padding: 92px 24px;
-      background: var(--cream);
+      padding: 96px 24px;
+    }
+
+    .section.section-cream {
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.24), rgba(255,255,255,0.04)),
+        var(--cream);
+    }
+
+    .section.section-warm {
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
+        var(--cream-warm);
+    }
+
+    .section.section-deep {
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.14), rgba(255,255,255,0.02)),
+        var(--cream-deep);
     }
 
     .section + .section {
@@ -258,25 +290,25 @@
 
     .section-title {
       margin: 0 0 14px;
-      font-size: clamp(34px, 4.5vw, 62px);
-      line-height: 0.96;
+      font-size: clamp(36px, 4.8vw, 66px);
+      line-height: 0.95;
       font-weight: 500;
       color: var(--text-dark);
     }
 
     .section-intro {
       margin: 0 0 34px;
-      max-width: 720px;
+      max-width: 760px;
       color: var(--text-soft);
       font-size: 17px;
-      line-height: 1.75;
+      line-height: 1.8;
     }
 
     .cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 50px;
+      min-height: 52px;
       padding: 0 22px;
       border-radius: var(--radius-pill);
       background: var(--moss);
@@ -284,13 +316,14 @@
       font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.02em;
-      transition: transform 0.25s ease, background 0.25s ease;
-      box-shadow: 0 10px 30px rgba(64, 81, 19, 0.18);
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 12px 34px rgba(64, 81, 19, 0.16);
     }
 
     .cta:hover {
       transform: translateY(-1px);
-      background: #4b5d18;
+      background: var(--moss-soft);
+      box-shadow: 0 18px 40px rgba(64, 81, 19, 0.18);
     }
 
     .cta.soft {
@@ -305,12 +338,12 @@
     }
 
     .tiny-note {
-      color: rgba(64, 81, 19, 0.62);
+      color: var(--text-faint);
       font-size: 12px;
       letter-spacing: 0.04em;
     }
 
-    /* ===== MUSIC SECTION ===== */
+    /* MUSIC */
     .album-layout {
       display: grid;
       grid-template-columns: 1.02fr 1fr 0.92fr;
@@ -326,25 +359,28 @@
     .pod-card {
       background: rgba(255,255,255,0.56);
       border: 1px solid var(--line);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-soft);
     }
 
     .album-art-card {
       position: relative;
       border-radius: var(--radius-xl);
-      min-height: 520px;
+      min-height: 540px;
       overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.68), rgba(255,255,255,0.36));
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 36px;
+      padding: 40px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(180,174,109,0.18), transparent 24%),
+        radial-gradient(circle at 80% 70%, rgba(156,105,43,0.12), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.42));
+      box-shadow: var(--shadow-strong);
     }
 
     .vinyl-wrap {
       position: relative;
-      width: min(440px, 100%);
+      width: min(450px, 100%);
       aspect-ratio: 1 / 1;
       display: flex;
       align-items: center;
@@ -360,8 +396,10 @@
       transform: translateY(-50%);
       border-radius: 50%;
       background:
-        radial-gradient(circle at center, #2b2b2b 0 14%, #111 14.5% 17%, #292929 17.5% 19%, #0d0d0d 19.5% 100%);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 20px 45px rgba(0,0,0,0.18);
+        radial-gradient(circle at center, #262626 0 13%, #111 13.5% 16.5%, #2f2f2f 17% 18.5%, #0b0b0b 19% 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        0 26px 46px rgba(0,0,0,0.16);
     }
 
     .album-cover {
@@ -369,32 +407,32 @@
       z-index: 2;
       width: 78%;
       aspect-ratio: 1 / 1;
-      background: #f7f4ed;
-      box-shadow: 0 24px 50px rgba(0,0,0,0.14);
       overflow: hidden;
-      border-radius: 2px;
+      border-radius: 4px;
+      background: #f7f4ed;
+      box-shadow: 0 26px 55px rgba(0,0,0,0.14);
     }
 
     .album-cover img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: saturate(0.94) contrast(0.98);
+      filter: saturate(0.92) contrast(0.98);
     }
 
     .album-info-card {
       border-radius: var(--radius-xl);
-      padding: 34px 32px;
-      min-height: 520px;
+      padding: 36px 34px;
+      min-height: 540px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: rgba(255,255,255,0.48);
+      background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,255,255,0.42));
     }
 
     .album-title {
       margin: 0 0 10px;
-      font-size: clamp(36px, 4vw, 58px);
+      font-size: clamp(38px, 4vw, 60px);
       line-height: 0.95;
       font-weight: 600;
     }
@@ -404,15 +442,15 @@
       gap: 14px;
       flex-wrap: wrap;
       margin-bottom: 20px;
-      color: rgba(37, 48, 24, 0.72);
+      color: rgba(37, 48, 24, 0.74);
       font-size: 13px;
     }
 
     .album-copy {
       color: var(--text-soft);
       font-size: 15px;
-      line-height: 1.85;
-      margin-bottom: 26px;
+      line-height: 1.9;
+      margin-bottom: 24px;
     }
 
     .album-actions {
@@ -425,9 +463,9 @@
 
     .album-track-card {
       border-radius: var(--radius-xl);
-      padding: 30px 28px;
-      min-height: 520px;
-      background: rgba(255,255,255,0.46);
+      padding: 32px 28px;
+      min-height: 540px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.40));
     }
 
     .track-title {
@@ -457,10 +495,10 @@
     }
 
     .track-list li span:first-child {
-      color: rgba(64, 81, 19, 0.45);
+      color: rgba(64, 81, 19, 0.42);
     }
 
-    /* ===== NOTION SECTION ===== */
+    /* NOTION */
     .notion-layout {
       display: grid;
       grid-template-columns: 1.28fr 0.72fr;
@@ -470,19 +508,23 @@
 
     .notion-main-card {
       border-radius: var(--radius-xl);
-      padding: 28px;
+      padding: 30px;
       display: grid;
-      grid-template-columns: 0.82fr 1fr;
-      gap: 26px;
+      grid-template-columns: 0.84fr 1fr;
+      gap: 28px;
       align-items: center;
-      background: linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.44));
+      background:
+        radial-gradient(circle at 12% 18%, rgba(180,174,109,0.12), transparent 20%),
+        linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,255,255,0.45));
+      box-shadow: var(--shadow-strong);
     }
 
     .notion-main-visual {
       border-radius: 24px;
       overflow: hidden;
-      min-height: 340px;
+      min-height: 360px;
       background: #ddd9cf;
+      box-shadow: inset 0 0 0 1px rgba(64,81,19,0.06);
     }
 
     .notion-main-visual img,
@@ -490,12 +532,13 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      filter: saturate(0.92) contrast(0.98);
     }
 
     .notion-copy h3 {
       margin: 0 0 12px;
-      font-size: clamp(28px, 3vw, 44px);
-      line-height: 1.04;
+      font-size: clamp(30px, 3vw, 46px);
+      line-height: 1.03;
       font-weight: 600;
     }
 
@@ -503,16 +546,18 @@
       margin: 0 0 18px;
       color: var(--text-soft);
       font-size: 15px;
-      line-height: 1.8;
+      line-height: 1.9;
     }
 
     .notion-preview-card {
       border-radius: var(--radius-xl);
-      padding: 20px;
+      padding: 22px;
       display: grid;
       grid-template-rows: auto 1fr auto;
       gap: 16px;
-      background: rgba(255,255,255,0.52);
+      background:
+        radial-gradient(circle at 80% 14%, rgba(156,105,43,0.10), transparent 20%),
+        linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,255,255,0.44));
     }
 
     .notion-preview-card h4 {
@@ -532,9 +577,10 @@
       overflow: hidden;
       min-height: 112px;
       background: #ddd9cf;
+      box-shadow: inset 0 0 0 1px rgba(64,81,19,0.06);
     }
 
-    /* ===== POD SECTION ===== */
+    /* POD */
     .pod-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -542,15 +588,18 @@
     }
 
     .pod-card {
-      border-radius: 28px;
+      border-radius: 30px;
       overflow: hidden;
-      background: rgba(255,255,255,0.58);
-      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.70), rgba(255,255,255,0.48));
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      box-shadow: var(--shadow-soft);
     }
 
     .pod-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 24px 60px rgba(31, 39, 15, 0.16);
+      transform: translateY(-5px);
+      box-shadow: 0 28px 60px rgba(24, 32, 8, 0.16);
+      border-color: var(--line-strong);
     }
 
     .pod-visual {
@@ -560,26 +609,35 @@
       background: #d9d5cc;
     }
 
+    .pod-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20,24,8,0.14), transparent 40%);
+      pointer-events: none;
+    }
+
     .pod-visual img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.55s ease;
-      filter: saturate(0.94) contrast(0.97);
+      transition: transform 0.55s ease, filter 0.55s ease;
+      filter: saturate(0.92) contrast(0.98);
     }
 
     .pod-card:hover .pod-visual img {
       transform: scale(1.08);
+      filter: saturate(0.98) contrast(1);
     }
 
     .pod-copy {
-      padding: 20px 20px 22px;
+      padding: 22px 20px 24px;
     }
 
     .pod-copy h3 {
       margin: 0 0 8px;
-      font-size: 22px;
-      line-height: 1.15;
+      font-size: 24px;
+      line-height: 1.12;
       font-weight: 600;
     }
 
@@ -587,7 +645,7 @@
       margin: 0 0 16px;
       color: var(--text-soft);
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
     .pod-meta {
@@ -598,16 +656,17 @@
       flex-wrap: wrap;
     }
 
-    /* ===== FOOTER ===== */
+    /* FOOTER */
     .footer {
-      padding: 40px 24px 70px;
+      padding: 42px 24px 72px;
       text-align: center;
       color: rgba(64, 81, 19, 0.56);
       font-size: 13px;
-      background: linear-gradient(to bottom, var(--cream), #e7e2d7);
+      background:
+        linear-gradient(to bottom, #e7e0d3, #e3dccf);
     }
 
-    /* ===== RESPONSIVE ===== */
+    /* RESPONSIVE */
     @media (max-width: 1080px) {
       .album-layout {
         grid-template-columns: 1fr;
@@ -690,7 +749,7 @@
       </div>
     </section>
 
-    <section class="section" id="music">
+    <section class="section section-cream" id="music">
       <div class="section-inner">
         <span class="eyebrow">Music Album</span>
         <h2 class="section-title display">A record that keeps the atmosphere going.</h2>
@@ -751,7 +810,7 @@
       </div>
     </section>
 
-    <section class="section" id="notion">
+    <section class="section section-warm" id="notion">
       <div class="section-inner">
         <span class="eyebrow">Gratitude Notes</span>
         <h2 class="section-title display">A softer place to write things down.</h2>
@@ -804,7 +863,7 @@
       </div>
     </section>
 
-    <section class="section" id="pod">
+    <section class="section section-deep" id="pod">
       <div class="section-inner">
         <span class="eyebrow">Print on Demand</span>
         <h2 class="section-title display">Three objects, lightly carried.</h2>
